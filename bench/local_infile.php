@@ -15,25 +15,25 @@ $link->options(MYSQLI_OPT_LOCAL_INFILE, true);
  * Method 1: LOAD DATA LOCAL INFILE
  */
 function test_load_data($link, $file) {
-  global $data_rows;
+    global $data_rows;
 
-	$link->query("TRUNCATE TABLE dwz_spieler");
-	$start = microtime(true);
+    $link->query("TRUNCATE TABLE dwz_spieler");
+    $start = microtime(true);
 
-	$query = "LOAD DATA LOCAL INFILE '" . addslashes($file) . "' 
-		INTO TABLE dwz_spieler 
-		FIELDS TERMINATED BY ',' 
-		OPTIONALLY ENCLOSED BY '\"' 
-		LINES TERMINATED BY '\\n'
-		IGNORE 1 LINES"; // Adjust based on your CSV header
+    $query = "LOAD DATA LOCAL INFILE '" . addslashes($file) . "'
+        INTO TABLE dwz_spieler
+        FIELDS TERMINATED BY ','
+        OPTIONALLY ENCLOSED BY '\"'
+        LINES TERMINATED BY '\\n'
+        IGNORE 1 LINES"; // Adjust based on your CSV header
 
-	$link->query($query);
-  if ($link->affected_rows != $data_rows) {
-		die("only $link->affected_rows were inserted");
-	}
+        $link->query($query);
+    if ($link->affected_rows != $data_rows) {
+        die("only $link->affected_rows were inserted");
+    }
 
 
-	return microtime(true) - $start;
+    return microtime(true) - $start;
 }
 
 /**
@@ -65,7 +65,7 @@ function stream_csv(string $file, int $chunkSize = 8192, bool $skipHeader = true
             foreach ($data as $i => $v) {
                 if ($v === '') $data[$i] = null;
             }
-            $batch[] = $data; 
+            $batch[] = $data;
         }
 
         // Yield all rows found in this chunk at once
@@ -88,26 +88,26 @@ function stream_csv(string $file, int $chunkSize = 8192, bool $skipHeader = true
 }
 
 function test_executemany($link, $file) {
-	global $data_rows;
-	$link->query("TRUNCATE TABLE dwz_spieler");
-	$start = microtime(true);
+    global $data_rows;
+    $link->query("TRUNCATE TABLE dwz_spieler");
+    $start = microtime(true);
 
-	$sql = "INSERT INTO dwz_spieler (
-			PID, ZPS, Mgl_Nr, Status, Spielername, Geschlecht, 
-			Spielberechtigung, Geburtsjahr, Letzte_Auswertung, 
-			DWZ, DWZ_Index, FIDE_Elo, FIDE_Titel, FIDE_ID, FIDE_Land
-			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO dwz_spieler (
+            PID, ZPS, Mgl_Nr, Status, Spielername, Geschlecht,
+            Spielberechtigung, Geburtsjahr, Letzte_Auswertung,
+            DWZ, DWZ_Index, FIDE_Elo, FIDE_Titel, FIDE_ID, FIDE_Land
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-	$stmt = $link->prepare($sql);
+    $stmt = $link->prepare($sql);
 
-	// Types: PID(i), ZPS(s), Mgl(i), Status(s), Name(s), Sex(s), 
-	// Auth(s), Year(i), Eval(i), DWZ(i), Idx(i), Elo(i), Title(s), FID(i), Land(s)
-	$stmt->executemany("sssssssssssssss", stream_csv($file));
+    // Types: PID(i), ZPS(s), Mgl(i), Status(s), Name(s), Sex(s),
+    // Auth(s), Year(i), Eval(i), DWZ(i), Idx(i), Elo(i), Title(s), FID(i), Land(s)
+    $stmt->executemany("sssssssssssssss", stream_csv($file));
 
-  if ($stmt->affected_rows != $data_rows) {
-		die("only $stmt->affected_rows were inserted");
-	}
-	return microtime(true) - $start;
+    if ($stmt->affected_rows != $data_rows) {
+        die("only $stmt->affected_rows were inserted");
+    }
+    return microtime(true) - $start;
 }
 
 // Execution
@@ -123,7 +123,7 @@ $line_count = 0;
 $handle = fopen($csv_file, "r");
 while (!feof($handle)) {
     while (fgets($handle))
-	    $line_count++;
+        $line_count++;
 }
 fclose($handle);
 

@@ -10,12 +10,12 @@ if ($link->connect_error) {
 /* Setup */
 $link->query("DROP TABLE IF EXISTS bench_delete");
 $link->query("
-    CREATE TABLE bench_delete (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(50),
-        score DOUBLE DEFAULT 20
-    ) ENGINE=$engine;
-");
+        CREATE TABLE bench_delete (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50),
+            score DOUBLE DEFAULT 20
+            ) ENGINE=$engine;
+        ");
 
 $total = 10000; // Size of each bulk chunk
 $iterations = 10; // Number of chunks
@@ -23,7 +23,7 @@ $grand_total = $total * $iterations;
 
 /**
  * PHASE 1: PRE-POPULATE THE TABLE
- * We use your new executemany() to quickly fill the table for the test
+ * We use executemany() to quickly fill the table for the test
  */
 echo "Pre-populating table with $grand_total rows...\n";
 $fill_data = [];
@@ -55,9 +55,9 @@ $link->begin_transaction();
 
 foreach ($delete_chunks as $chunk) {
     $stmt->executemany("i", $chunk);
-		if ($stmt->affected_rows != $total) {
-			die("only $stmt->affected_rows were deleted instead of $total");
-		}
+    if ($stmt->affected_rows != $total) {
+        die("only $stmt->affected_rows were deleted instead of $total");
+    }
 }
 
 $link->commit();

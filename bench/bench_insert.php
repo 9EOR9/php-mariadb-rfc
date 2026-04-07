@@ -12,12 +12,12 @@ if ($link->connect_error) {
 /* Setup */
 $link->query("DROP TABLE IF EXISTS bench_exec");
 $link->query("
-    CREATE TABLE bench_exec (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(50),
-        score DOUBLE DEFAULT 20
-    ) ENGINE=$engine;
-");
+        CREATE TABLE bench_exec (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50),
+            score DOUBLE DEFAULT 20
+            ) ENGINE=$engine;
+        ");
 
 $total = 100000;
 $iterations = 20;
@@ -34,9 +34,9 @@ $stmt = $link->prepare("INSERT INTO bench_exec (name, score) VALUES (?, ?)");
 $start = microtime(true);
 for ($i=0; $i < $iterations; $i++) {
     $stmt->executemany("sd", $rows);
-	  if ($stmt->affected_rows != $total) {
-			die("Only $stmt->affected_rows inserted. Expected $total rows");
-		}
+    if ($stmt->affected_rows != $total) {
+        die("Only $stmt->affected_rows inserted. Expected $total rows");
+    }
 }
 $link->commit();
 $elapsed = microtime(true) - $start;
@@ -52,10 +52,10 @@ $stmt = $link->prepare("INSERT INTO bench_exec (name, score) VALUES (?, ?)");
 $link->begin_transaction();
 $start = microtime(true);
 for ($i=0; $i < $iterations; $i++) {
-	foreach ($rows as $row) {
-  	$stmt->bind_param("sd", $row[0], $row[1]);
-    $stmt->execute();
-	}
+    foreach ($rows as $row) {
+        $stmt->bind_param("sd", $row[0], $row[1]);
+        $stmt->execute();
+    }
 }
 $link->commit();
 $elapsed = microtime(true) - $start;

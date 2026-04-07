@@ -10,15 +10,15 @@ if ($link->connect_error) {
 /* Setup */
 $link->query("DROP TABLE IF EXISTS bench_update");
 $link->query("
-    CREATE TABLE bench_update (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(50),
-        score DOUBLE DEFAULT 20
-    ) ENGINE=$engine;
-");
+        CREATE TABLE bench_update (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50),
+            score DOUBLE DEFAULT 20
+            ) ENGINE=$engine;
+        ");
 
-$total = 10000; 
-$iterations = 10; 
+$total = 10000;
+$iterations = 10;
 $grand_total = $total * $iterations;
 
 /**
