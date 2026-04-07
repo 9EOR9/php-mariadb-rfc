@@ -1,6 +1,15 @@
 # MariaDB PHP Driver Benchmarks: `executemany`
 
-This repository contains performance benchmarks for the MariaDB PHP RFC, comparing the new `mysqli_stmt::executemany()` method against traditional `execute()` loops and `LOAD DATA LOCAL INFILE`.
+his repository contains performance benchmarks for the MariaDB PHP RFC, comparing the new `mysqli_stmt::executemany()` method against traditional `execute()` loops and `LOAD DATA LOCAL INFILE`.
+
+## Introdution ##
+
+It is impossible to say that `"executemany()` is 'n-times' faster than a sequential `execute()`" loop as a universal rule. The performance delta is highly dependent on two primary factors: hardware processing power and network latency."
+
+For this reason, two distinct scenarios were chosen for this analysis to demonstrate the impact of these factors:
+
+1. **Localhost:** A very fast connection via `unix_socket`, representing minimal overhead and peak hardware throughput.
+2. **Raspberry Pi 4:** A resource-constrained client connected via Ethernet, representing a real-world remote hardware scenario where network latency and CPU limitations typically bottleneck database operations.
 
 ## Environment Specifications
 
@@ -24,7 +33,6 @@ To ensure reproducibility, the following hardware and software configurations we
 ## Benchmark Results
 
 ### 1. Local Comparison (Server & Client on same machine)
-*Testing with `spieler.csv` (98,686 rows, 6.63 MB).*
 
 | Operation | Method | Result |
 | :--- | :--- | :--- |
