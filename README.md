@@ -1,6 +1,6 @@
 # MariaDB PHP Driver Benchmarks: `executemany`
 
-his repository contains performance benchmarks for the MariaDB PHP RFC, comparing the new `mysqli_stmt::executemany()` method against traditional `execute()` loops and `LOAD DATA LOCAL INFILE`.
+This repository contains performance benchmarks for the MariaDB PHP RFC, comparing the new `mysqli_stmt::executemany()` method against traditional `execute()` loops and `LOAD DATA LOCAL INFILE`.
 
 ## Introdution ##
 
